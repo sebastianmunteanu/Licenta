@@ -1,0 +1,59 @@
+import RPi.GPIO as GPIO
+import requests
+import json
+
+# Lista pinilor unde sunt conectați senzorii
+pins = [18, 23, 24, 25, 12, 16, 20, 21]  # Adaugă aici toți pinii tăi de senzori
+
+# Configurare GPIO
+GPIO.setmode(GPIO.BCM)
+for pin in pins:
+    # Configurează fiecare pin ca intrare cu rezistență de pull-down
+    GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+# Configurare server
+server_url = "http://192.168.1.170:8080/api/digital-sensors"
+
+# Dicționar pentru a stoca ultima stare a fiecărui pin
+last_state = {}
+
+# Inițializarea stării pentru fiecare pin
+for pin in pins:
+    last_state[pin] = GPIO.input(pin)  # Starea inițială a senzorilor
+
+# Callback general pentru schimbarea stării oricărui senzor
+def handle_sensor_change(channel):
+    # Citește starea pinului care a declanșat evenimentul
+    state = GPIO.input(channel)
+
+    # Verifică dacă starea senzorului s-a schimbat față de ultima stare
+    if state != last_state[channel]:
+        # Construiește payload-ul JSON
+        payload = {
+            "sensorPin": channel,  # Pinul care a declanșat evenimentul
+            "sensorState": not state   # Starea senzorului (0 sau 1)
+        }
+
+        # Trimite cererea POST către server
+        try:
+            response = requests.post(server_url, json=payload, timeout=5)
+            print(f"Trimis: {payload}, Răspuns: {response.status_code}")
+        except requests.exceptions.RequestException as e:
+            print(f"Eroare de rețea pentru pinul {channel}: {e}")
+
+        # Actualizează ultima stare
+        last_state[channel] = state
+
+# Configurează evenimente pentru toți pinii
+for pin in pins:
+    GPIO.add_event_detect(pin, GPIO.BOTH, callback=handle_sensor_change)  # BOTH = LOW și HIGH
+
+try:
+    print("Aștept schimbări ale senzorilor. Apasă Ctrl+C pentru a ieși.")
+    while True:
+        pass  # Buclă infinită pentru a menține scriptul activ
+
+except KeyboardInterrupt:
+    print("Script oprit manual.")
+finally:
+    GPIO.cleanup()

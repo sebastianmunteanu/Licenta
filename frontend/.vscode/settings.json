@@ -1,0 +1,25 @@
+{
+  "editor.tabSize": 2, // Setează dimensiunea tabului la 2 spații
+  "editor.insertSpaces": true, // Folosește spații în loc de tab-uri
+  "prettier.tabWidth": 2, // Setează dimensiunea tab-ului la 2 spații în Prettier
+  "prettier.useTabs": false, // Folosește spații, nu tab-uri
+  "prettier.singleQuote": false, // Duble ghilimele (opțional, conform .prettierrc)
+  "prettier.trailingComma": "none", // Fără virgulă finală (conform .prettierrc)
+  "prettier.printWidth": 100, // Lățimea liniei
+  "prettier.semi": true, // Punct și virgulă la sfârșitul fiecărei linii
+  "prettier.endOfLine": "auto", // Terminatorul de linie (auto)
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.requireConfig": true
+}

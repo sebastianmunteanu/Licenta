@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ro">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Editare alerte" />
+        <meta name="author" content="Munteanu Alexandru-Sebastian" />
+        <title>Editare Alerte</title>
+        <link th:href="@{/bootstrap/css/style/simple-datables.css}" rel="stylesheet" />
+        <link th:href="@{/bootstrap/css/style/styles.css}" rel="stylesheet" />
+        <script th:src="@{/bootstrap/js/actions/fontawesome.js}" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <div th:insert="~{fragments/nav-bar_fragment.html}"></div>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div th:insert="~{fragments/leftside-nav_content_fragment.html}"></div>
+                    <div th:replace="~{fragments/leftside-footer_fragment.html}"></div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-10 col-md-10">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Editare alerte senzor</h3></div>
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <h1 th:text="${sensor.denumire}"></h1>
+                                    </div>
+                                    <hr>
+                                    <form action="#" method="post" th:action="@{/addAlertToSensor}" th:object="${smsalert}">
+                                        <input type="hidden" th:field="*{sensorId}"/>
+                                        <div class="card col-lg-4 justify-content-center m-2 mx-auto text-center">
+                                            <div class="card-header">
+                                                Adauga alerta noua
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" id="phoneNumber" type="text" th:field="*{phoneNumber}"/>
+                                                    <label for="phoneNumber">Numar de telefon</label>
+                                                    <div th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger"></div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button class="btn btn-primary" type="submit">
+                                                    Adauga
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="container">
+                                        <div class="row justify-content-center flex-wrap">
+                                            <div class="card bg-light text-blue m-2 col-3" th:each="alert: ${sensor.smsAlerts}">
+                                                <div class="card-header d-flex justify-content-center">
+                                                    Utilizator
+                                                </div>
+                                                <div class="card-body d-flex justify-content-center">
+                                                    <div>
+                                                        <label th:text="${alert.phoneNumber}"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer justify-content-center d-flex">
+                                                    <button class="btn btn-danger me-3" th:onclick="'deleteAlert(\'' + ${alert.id} + '\')'">
+                                                        <div class="sb-nav-link-icon"><i class="fas fa-trash"></i></div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer>
+                    <div th:insert="~{fragments/footer_fragment.html}"></div>
+                </footer>
+            </div>
+        </div>
+        <script th:src="@{/js/deleteAlert.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/bundle.min.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/scripts.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/simple-datatables.min.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/datatables-simple-demo.js}"></script>
+    </body>
+</html>

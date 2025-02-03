@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ro">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Afiseaza lista senzori" />
+        <meta name="author" content="Munteanu Alexandru-Sebastian" />
+        <title>Lista Senzori</title>
+        <link th:href="@{/bootstrap/css/style/simple-datables.css}" rel="stylesheet" />
+        <link th:href="@{/bootstrap/css/style/styles.css}" rel="stylesheet" />
+        <script th:src="@{/bootstrap/js/actions/fontawesome.js}" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <div th:insert="~{fragments/nav-bar_fragment.html}"></div>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div th:insert="~{fragments/leftside-nav_content_fragment.html}"></div>
+                    <div th:replace="~{fragments/leftside-footer_fragment.html}"></div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <!--insert main content-->
+                </main>
+                <footer>
+                    <div th:insert="~{fragments/footer_fragment.html}"></div>
+                </footer>
+            </div>
+        </div>
+        <script th:src="@{/bootstrap/js/actions/bundle.min.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/scripts.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/simple-datatables.min.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/datatables-simple-demo.js}"></script>
+    </body>
+</html>

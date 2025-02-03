@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="Afiseaza lista senzori" />
+        <meta name="author" content="Munteanu Alexandru-Sebastian" />
+        <title>Lista Senzori Inactivi</title>
+        <link th:href="@{/bootstrap/css/style/simple-datables.css}" rel="stylesheet" />
+        <link th:href="@{/bootstrap/css/style/styles.css}" rel="stylesheet" />
+        <script th:src="@{/bootstrap/js/actions/fontawesome.js}" crossorigin="anonymous"></script>
+    </head>
+    <body class="sb-nav-fixed">
+        <div th:insert="~{fragments/nav-bar_fragment.html}"></div>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div th:replace="~{fragments/leftside-nav_content_fragment.html}"></div>
+                    <div th:replace="~{fragments/leftside-footer_fragment.html}"></div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid col-10">
+                        <div class="card m-4 col-6">
+                            <div class="card-header">
+                                <i class="fas fa-key me-1"></i>
+                                Actiuni senzori
+                            </div>
+                            <div class="card-body">
+                                <a th:href="@{/sensorsactions}">
+                                    <button class="btn text-bg-warning">Inregistrare senzor nou</button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Lista senzori inactivi
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                        <tr>
+                                            <th>Denumire</th>
+                                            <th>Localizare</th>
+                                            <th>Actiuni</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Denumire</th>
+                                            <th>Localizare</th>
+                                            <th>Actiuni</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <tr th:each="sensor : ${sensorList}">
+                                            <td th:text="${sensor.denumire}"></td>
+                                            <td th:text="${sensor.localizare}"></td>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="m-1">
+                                                        <form th:action="@{/enableSensor}" method="post">
+                                                            <input type="hidden" th:name="id" th:value="${sensor.id}"/>
+                                                            <button type="submit" class="btn btn-outline-danger">Activeaza alerte</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <div th:insert="~{fragments/footer_fragment.html}"></div>
+            </div>
+        </div>
+        <script th:src="@{/bootstrap/js/actions/bundle.min.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/scripts.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/simple-datatables.min.js}"></script>
+        <script th:src="@{/bootstrap/js/actions/datatables-simple-demo.js}"></script>
+    </body>
+</html>

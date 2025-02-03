@@ -1,0 +1,52 @@
+from flask import Flask, request, jsonify
+import serial
+import time
+
+# Configurare parametrii seriali
+serial_port = "/dev/ttyUSB0"  # Portul serial USB pe care este conectat modulul GSM
+baud_rate = 19200  # Viteza de transmitere în biți pe secundă
+
+# Inițializare obiect Serial
+agsm = serial.Serial(serial_port, baud_rate, timeout=1)
+
+# Așteaptă 1 secundă pentru a permite inițializarea modulului GSM
+time.sleep(1)
+
+# Trimitere comandă AT pentru inițializarea modulului GSM
+agsm.write(b"AT\r\n")
+response = agsm.readall()
+print("Răspuns de la modulul GSM:")
+print(response.decode())
+agsm.write(b"AT+CMGF=1\r\n")
+
+
+app = Flask(__name__)
+
+@app.route('/receive-data', methods=['POST'])
+def receive_data():
+        data = request.json  # Se obțin datele JSON trimise prin cererea POST
+
+    # Extrage datele din obiectul JSON
+        phone_number = data.get('phoneNumber')
+        message = data.get('message')
+    # Verifică dacă datele au fost extrase corect
+        if phone_number is None or message is None:
+                return jsonify({"error": "Invalid data format"}), 400
+
+        if not phone_number.strip():
+                return jsonify({"error": "Invalid number"}), 400
+# Trimitere comandă AT pentru trimiterea mesajului SMS
+        command = "AT+CMGS=\"{}\"\r\n".format(phone_number)
+        agsm.write(command.encode())
+        time.sleep(1)
+        agsm.write(message.encode())
+        agsm.write(bytes([26]))  # Trimite caracterul Control-Z pentru a trimite mesajul
+        response = agsm.readall()
+        print("Răspuns de la modulul GSM:")
+        print(response.decode())
+
+# Închidere conexiune serială
+        return jsonify({"message": "Data received successfully"}), 200
+
+if __name__ == '__main__':
+        app.run(host='192.168.1.10', port=5000)  # Pornirea serverului Flask
